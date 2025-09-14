@@ -33,7 +33,7 @@ class SampleTest extends WPMockTestCase {
 
 class SampleClass {
 	public function get_user_names_appended_to_post_id( $post_id ) {
-		// Safely type-case Post ID.
+		// Safely type-cast Post ID.
 		$id = absint( $post_id );
 
 		// Get list of users.
