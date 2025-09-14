@@ -8,11 +8,11 @@ use Badasswp\WPMockTC\WPMockTestCase;
  * @covers \Badasswp\WPMockTC\Tests\SampleClass::get_user_names_appended_to_post_id
  */
 class SampleTest extends WPMockTestCase {
-	private $your_class;
+	private $sample_class;
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->your_class = new SampleClass();
+		$this->sample_class = new SampleClass();
 	}
 
 	public function tearDown(): void {
@@ -26,7 +26,7 @@ class SampleTest extends WPMockTestCase {
 				'Cathryn Washington - 1',
 				'Jack Foley - 1',
 			),
-			$this->your_class->get_user_names_appended_to_post_id( 1 )
+			$this->sample_class->get_user_names_appended_to_post_id( 1 )
 		);
 	}
 }
