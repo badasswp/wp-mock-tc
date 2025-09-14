@@ -65,14 +65,14 @@ class YourClassTest extends WPMockTestCase {
         parent::tearDown();
     }
 
-    public function test_get_user_names_appended_to_post_id {
+    public function test_get_user_names_appended_to_post_id() {
         $this->assertSame(
             [
                 'John Doe - 1',
                 'Cathryn Washington - 1',
                 'Jack Foley - 1'
-            ]
-            $this->your_class->get_user_names_appended_to_post_id( 1 );
+            ],
+            $this->your_class->get_user_names_appended_to_post_id( 1 )
         );
     }
 }
