@@ -64,14 +64,18 @@ class WPMockTestCase extends TestCase {
 			->andReturnUsing( fn( $arg ) => $arg );
 
 		WP_Mock::userFunction( '_e' )
-			->andReturnUsing( function( $arg ) {
-				echo $arg;
-			} );
+			->andReturnUsing(
+				function ( $arg ) {
+					echo $arg;
+				}
+			);
 
 		WP_Mock::userFunction( '_n' )
-			->andReturnUsing( function( $single, $plural, $number ) {
-				return $number == 1 ? $single : $plural;
-			} );
+			->andReturnUsing(
+				function ( $single, $plural, $number ) {
+					return $number == 1 ? $single : $plural;
+				}
+			);
 	}
 
 	/**
