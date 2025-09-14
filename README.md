@@ -17,7 +17,7 @@ Load `parent` methods correctly by running `setUp` and `tearDown` methods like s
 ```php
 use Badasswp\WPMockTC\WPMockTestCase;
 
-class YourClassTest extends WPMockTestCase {
+class SampleTest extends WPMockTestCase {
     public function setUp(): void {
         parent::setUp();
     }
@@ -30,16 +30,16 @@ class YourClassTest extends WPMockTestCase {
 
 ## Demo Sample
 
-The example below shows a class called `YourClass` which contains a public method that appends the list of names to the `post_id` param.
+The example below shows a class called `SampleClass` which contains a public method that appends the list of names to the `post_id` param.
 
 We can simply write our test case and allow __WPMockTestCase__ take care of the mock definitions under the hood like so:
 
 ```php
 use Badasswp\WPMockTC\WPMockTestCase;
 
-class YourClass {
+class SampleClass {
     public function get_user_names_appended_to_post_id( $post_id ) {
-        // Safely type-case Post ID.
+        // Safely type-cast Post ID.
         $id = absint( $post_id );
 
         // Get list of users.
@@ -55,10 +55,12 @@ class YourClass {
     }
 }
 
-class YourClassTest extends WPMockTestCase {
+class SampleTest extends WPMockTestCase {
+    private $sample_class;
+
     public function setUp(): void {
         parent::setUp();
-        $this->your_class = new YourClass();
+        $this->sample_class = new SampleClass();
     }
 
     public function tearDown(): void {
@@ -72,7 +74,7 @@ class YourClassTest extends WPMockTestCase {
                 'Cathryn Washington - 1',
                 'Jack Foley - 1'
             ],
-            $this->your_class->get_user_names_appended_to_post_id( 1 )
+            $this->sample_class->get_user_names_appended_to_post_id( 1 )
         );
     }
 }
