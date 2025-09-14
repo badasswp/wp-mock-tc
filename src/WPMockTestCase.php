@@ -30,6 +30,7 @@ class WPMockTestCase extends TestCase {
 		static::i18n();
 		static::esc();
 		static::esc_i18n();
+		static::utils();
 	}
 
 	/**
@@ -105,8 +106,24 @@ class WPMockTestCase extends TestCase {
 		WP_Mock::userFunction( 'esc_html__' )->andReturnUsing( $pass_through );
 		WP_Mock::userFunction( 'esc_attr__' )->andReturnUsing( $pass_through );
 		WP_Mock::userFunction( 'esc_html_e' )
-			->andReturnUsing( function( $arg ) {
-				echo $arg;
-			} );
+			->andReturnUsing(
+				function ( $arg ) {
+					echo $arg;
+				}
+			);
+	}
+
+	/**
+	 * Utils mocks.
+	 *
+	 * Define all utils mocks here.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return void
+	 */
+	public static function utils(): void {
+		WP_Mock::userFunction( 'absint' )
+			->andReturnUsing( fn( $arg ) => intval( $arg ) );
 	}
 }
