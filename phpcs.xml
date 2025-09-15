@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <ruleset name="WPMockTC">
 	<rule ref="WordPress-Core">
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
 	<arg value="s" />
