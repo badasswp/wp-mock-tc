@@ -77,7 +77,7 @@ class WPMockTestCase extends TestCase {
 		WP_Mock::userFunction( '_n' )
 			->andReturnUsing(
 				function ( $single, $plural, $number ) {
-					return $number == 1 ? $single : $plural;
+					return 1 === $number ? $single : $plural;
 				}
 			);
 	}
