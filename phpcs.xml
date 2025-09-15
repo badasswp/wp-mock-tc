@@ -3,6 +3,9 @@
 	<rule ref="WordPress-Core">
 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid" />
+		<exclude name="Generic.Classes.OpeningBraceSameLine.MissingBrace" />
+		<exclude name="PSR2.Classes.ClassDeclaration.MissingBrace" />
 	</rule>
 
 	<arg value="s" />
