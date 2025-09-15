@@ -133,5 +133,28 @@ class WPMockTestCase extends TestCase {
 	public static function utils(): void {
 		WP_Mock::userFunction( 'absint' )
 			->andReturnUsing( fn( $arg ) => intval( $arg ) );
+
+		WP_Mock::userFunction( 'is_wp_error' )
+			->andReturnUsing( fn( $arg ) => $arg instanceof WP_Error );
+
+		WP_Mock::userFunction( 'rest_ensure_response' )
+			->andReturnUsing(
+				function ( $arg ) {
+					if ( $arg instanceof WP_Error || $arg instanceof WP_REST_Response ) {
+						return $arg;
+					}
+
+					return Mockery::mock( WP_REST_Response::class )->makePartial();
+				}
+			);
+
+		WP_Mock::userFunction( 'wp_json_encode' )
+			->andReturnUsing( fn( $arg ) => json_encode( $arg ) );
+
+		WP_Mock::userFunction( 'wp_parse_args' )
+			->andReturnUsing( fn( $arg1, $arg2 ) => array_merge( $arg2, $arg1 ) );
+
+		WP_Mock::userFunction( 'wp_strip_all_tags' )
+			->andReturnUsing( fn( $arg ) => strip_tags( $arg ) );
 	}
 }
