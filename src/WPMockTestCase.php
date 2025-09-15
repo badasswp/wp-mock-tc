@@ -11,7 +11,11 @@
 namespace Badasswp\WPMockTC;
 
 use WP_Mock;
+use WP_Error;
+use WP_HTTP_Response;
+use WP_REST_Response;
 use WP_Mock\Tools\TestCase;
+use Mockery;
 
 class WPMockTestCase extends TestCase {
 	/**
