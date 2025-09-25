@@ -137,17 +137,6 @@ class WPMockTestCase extends TestCase {
 		WP_Mock::userFunction( 'is_wp_error' )
 			->andReturnUsing( fn( $arg ) => $arg instanceof WP_Error );
 
-		WP_Mock::userFunction( 'rest_ensure_response' )
-			->andReturnUsing(
-				function ( $arg ) {
-					if ( $arg instanceof WP_Error || $arg instanceof WP_REST_Response ) {
-						return $arg;
-					}
-
-					return Mockery::mock( WP_REST_Response::class )->makePartial();
-				}
-			);
-
 		WP_Mock::userFunction( 'wp_json_encode' )
 			->andReturnUsing( fn( $arg ) => json_encode( $arg ) );
 
