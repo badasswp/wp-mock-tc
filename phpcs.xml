@@ -6,6 +6,7 @@
 		<exclude name="WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid" />
 		<exclude name="Generic.Classes.OpeningBraceSameLine.MissingBrace" />
 		<exclude name="PSR2.Classes.ClassDeclaration.MissingBrace" />
+		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
 	</rule>
 
 	<arg value="s" />
