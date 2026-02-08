@@ -19,6 +19,15 @@ use Mockery;
 
 class WPMockTestCase extends TestCase {
 	/**
+	 * List of overriden functions.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @var array
+	 */
+	public static array $overrides = array();
+
+	/**
 	 * Setup Method.
 	 *
 	 * Define basic WP mocks for test
@@ -49,6 +58,9 @@ class WPMockTestCase extends TestCase {
 	 */
 	public function tearDown(): void {
 		WP_Mock::tearDown();
+
+		// Clear out overrides, after test is done.
+		static::$overrides = [];
 	}
 
 	/**
@@ -61,25 +73,34 @@ class WPMockTestCase extends TestCase {
 	 * @return void
 	 */
 	public static function i18n(): void {
-		WP_Mock::userFunction( '__' )
-			->andReturnUsing( fn( $arg ) => $arg );
+		$pass_through = fn( $arg ) => $arg;
 
-		WP_Mock::userFunction( '_x' )
-			->andReturnUsing( fn( $arg ) => $arg );
+		// Get i18n functions.
+		$i18n_funcs = array( '__', '_x' );
 
-		WP_Mock::userFunction( '_e' )
-			->andReturnUsing(
-				function ( $arg ) {
-					echo $arg;
-				}
-			);
+		foreach ( $i18n_funcs as $func ) {
+			if ( ! in_array( $func, static::$overrides, true ) ) {
+				WP_Mock::userFunction( $func )->andReturnUsing( $pass_through );
+			}
+		}
 
-		WP_Mock::userFunction( '_n' )
-			->andReturnUsing(
-				function ( $single, $plural, $number ) {
-					return 1 === $number ? $single : $plural;
-				}
-			);
+		if ( ! in_array( '_e', static::$overrides, true ) ) {
+			WP_Mock::userFunction( '_e' )
+				->andReturnUsing(
+					function ( $arg ) {
+						echo $arg;
+					}
+				);
+		}
+
+		if ( ! in_array( '_n', static::$overrides, true ) ) {
+			WP_Mock::userFunction( '_n' )
+				->andReturnUsing(
+					function ( $single, $plural, $number ) {
+						return 1 === $number ? $single : $plural;
+					}
+				);
+		}
 	}
 
 	/**
@@ -94,9 +115,14 @@ class WPMockTestCase extends TestCase {
 	public static function esc(): void {
 		$pass_through = fn( $arg ) => $arg;
 
-		WP_Mock::userFunction( 'esc_html' )->andReturnUsing( $pass_through );
-		WP_Mock::userFunction( 'esc_attr' )->andReturnUsing( $pass_through );
-		WP_Mock::userFunction( 'esc_url' )->andReturnUsing( $pass_through );
+		// Get escape functions.
+		$esc_funcs = array( 'esc_html', 'esc_attr', 'esc_url' );
+
+		foreach ( $esc_funcs as $func ) {
+			if ( ! in_array( $func, static::$overrides, true ) ) {
+				WP_Mock::userFunction( $func )->andReturnUsing( $pass_through );
+			}
+		}
 	}
 
 	/**
@@ -111,14 +137,23 @@ class WPMockTestCase extends TestCase {
 	public static function esc_i18n(): void {
 		$pass_through = fn( $arg1, $arg2 ) => $arg1;
 
-		WP_Mock::userFunction( 'esc_html__' )->andReturnUsing( $pass_through );
-		WP_Mock::userFunction( 'esc_attr__' )->andReturnUsing( $pass_through );
-		WP_Mock::userFunction( 'esc_html_e' )
-			->andReturnUsing(
-				function ( $arg ) {
-					echo $arg;
-				}
-			);
+		// Get escape__ functions.
+		$esc_i18n_funcs = array( 'esc_html__', 'esc_attr__' );
+
+		foreach ( $esc_i18n_funcs as $func ) {
+			if ( ! in_array( $func, static::$overrides, true ) ) {
+				WP_Mock::userFunction( $func )->andReturnUsing( $pass_through );
+			}
+		}
+
+		if ( ! in_array( 'esc_html_e', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'esc_html_e' )
+				->andReturnUsing(
+					function ( $arg ) {
+						echo $arg;
+					}
+				);
+		}
 	}
 
 	/**
@@ -131,19 +166,41 @@ class WPMockTestCase extends TestCase {
 	 * @return void
 	 */
 	public static function utils(): void {
-		WP_Mock::userFunction( 'absint' )
-			->andReturnUsing( fn( $arg ) => intval( $arg ) );
+		if ( ! in_array( 'absint', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'absint' )
+				->andReturnUsing( fn( $arg ) => intval( $arg ) );
+		}
 
-		WP_Mock::userFunction( 'is_wp_error' )
-			->andReturnUsing( fn( $arg ) => $arg instanceof WP_Error );
+		if ( ! in_array( 'is_wp_error', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'is_wp_error' )
+				->andReturnUsing( fn( $arg ) => $arg instanceof WP_Error );
+		}
 
-		WP_Mock::userFunction( 'wp_json_encode' )
-			->andReturnUsing( fn( $arg ) => json_encode( $arg ) );
+		if ( ! in_array( 'wp_json_encode', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'wp_json_encode' )
+				->andReturnUsing( fn( $arg ) => json_encode( $arg ) );
+		}
 
-		WP_Mock::userFunction( 'wp_parse_args' )
-			->andReturnUsing( fn( $arg1, $arg2 ) => array_merge( $arg2, $arg1 ) );
+		if ( ! in_array( 'wp_parse_args', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'wp_parse_args' )
+				->andReturnUsing( fn( $arg1, $arg2 ) => array_merge( $arg2, $arg1 ) );
+		}
 
-		WP_Mock::userFunction( 'wp_strip_all_tags' )
-			->andReturnUsing( fn( $arg ) => strip_tags( $arg ) );
+		if ( ! in_array( 'wp_strip_all_tags', static::$overrides, true ) ) {
+			WP_Mock::userFunction( 'wp_strip_all_tags' )
+				->andReturnUsing( fn( $arg ) => strip_tags( $arg ) );
+		}
+	}
+
+	/**
+	 * Override mock functions.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $overrides List of overrides.
+	 * @return void
+	 */
+	public static function override( $overrides ): void {
+		static::$overrides = $overrides;
 	}
 }
