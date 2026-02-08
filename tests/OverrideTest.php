@@ -13,7 +13,7 @@ class OverrideTest extends WPMockTestCase {
 
 	public function setUp(): void {
 		// Let's override the absint method.
-		parent::override( [ 'absint' ] );
+		parent::override( array( 'absint' ) );
 		parent::setUp();
 
 		$this->override_class = new OverrideClass();
@@ -27,7 +27,7 @@ class OverrideTest extends WPMockTestCase {
 		// Now we have to manually mock the absint here.
 		WP_Mock::userFunction( 'absint' )
 			->andReturnUsing(
-				function( $arg ) {
+				function ( $arg ) {
 					return intval( $arg );
 				}
 			);

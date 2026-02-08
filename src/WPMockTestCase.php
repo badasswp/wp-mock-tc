@@ -60,7 +60,7 @@ class WPMockTestCase extends TestCase {
 		WP_Mock::tearDown();
 
 		// Clear out overrides, after test is done.
-		static::$overrides = [];
+		static::$overrides = array();
 	}
 
 	/**
