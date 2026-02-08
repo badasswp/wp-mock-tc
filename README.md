@@ -82,6 +82,58 @@ class SampleTest extends WPMockTestCase {
 
 Notice that in our test, we are not mocking the WP functions `absint` and `esc_html`, __WPMockTestCase__ handles that for us under the hood, so we have one less thing to worry about.
 
+## Override Mocks
+
+You can override any of the existing `WPMockTestCase` mocks by simply running the `parent::override` method like so:
+
+```php
+use Badasswp\WPMockTC\WPMockTestCase;
+
+class OverrideTest extends WPMockTestCase {
+    public function setUp(): void {
+        parent::override( [ 'absint' ] );
+        parent::setUp();
+    }
+
+    public function tearDown(): void {
+        parent::tearDown();
+    }
+
+    public function test_get_user_names_appended_to_post_id() {
+        // Now you can define your custom mock.
+        WP_Mock::userFunction( 'absint' )
+            ->andReturn( 1 );
+
+        $this->assertSame(
+            [
+                'John Doe - 1',
+                'Cathryn Washington - 1',
+                'Jack Foley - 1'
+            ],
+            $this->sample_class->get_user_names_appended_to_post_id( 1 )
+        );
+    }
+}
+```
+
 ## Caveat
 
 At the moment, __WPMockTestCase__ DOES NOT mock all of WP functions. So you may have to do some of your own mocking in your test cases.
+
+Here are a list of mocked functions in WPMockTestCase:
+
+- `__`
+- `_e`
+- `_x`
+- `_n`
+- `esc_html`
+- `esc_attr`
+- `esc_url`
+- `esc_html__`
+- `esc_attr__`
+- `esc_html_e`
+- `absint`
+- `is_wp_error`
+- `wp_json_encode`
+- `wp_parse_args`
+- `wp_strip_all_tags`
